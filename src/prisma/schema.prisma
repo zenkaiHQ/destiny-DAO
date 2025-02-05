@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id              String      @id @default(uuid())
+  name            String
+  walletAddress   String      @unique
+  stakedAmount    Decimal?    @db.Decimal(20,8)
+  characters      Character[]
+  participations  StoryParticipant[]
+  winnings        StoryWinner[]
+}
+
+model Story {
+  id            String      @id @default(uuid())
+  name          String
+  startTime     DateTime
+  endTime       DateTime
+  isActive      Boolean     @default(true)
+  participants  StoryParticipant[]
+  winners       StoryWinner[]
+}
+
+model Character {
+  id          String    @id @default(uuid())
+  name        String
+  isAlive     Boolean   @default(true)
+  details     String?
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  story       StoryParticipant?
+}
+
+model StoryParticipant {
+  id          String    @id @default(uuid())
+  storyId     String
+  userId      String
+  characterId String    @unique
+  stakedAmount Decimal  @db.Decimal(20,8)
+  story       Story     @relation(fields: [storyId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+  character   Character @relation(fields: [characterId], references: [id])
+
+  @@unique([storyId, userId])
+}
+
+model StoryWinner {
+  id          String    @id @default(uuid())
+  storyId     String
+  userId      String
+  reward      Decimal   @db.Decimal(20,8)
+  story       Story     @relation(fields: [storyId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@unique([storyId, userId])
+}

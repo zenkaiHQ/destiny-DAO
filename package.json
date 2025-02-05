@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
+  },
   "dependencies": {
+    "@prisma/client": "^6.3.1",
     "@radix-ui/react-slot": "^1.1.1",
     "@reown/appkit": "^1.6.5",
     "@reown/appkit-adapter-wagmi": "^1.6.5",
@@ -34,6 +38,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "postcss": "^8",
+    "prisma": "^6.3.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

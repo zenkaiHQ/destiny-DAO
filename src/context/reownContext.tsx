@@ -3,16 +3,12 @@
 import { wagmiAdapter, projectId } from '@/config/wagmiAdpater'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createAppKit } from '@reown/appkit/react'
-import { mainnet, arbitrum } from '@reown/appkit/networks'
+import { arbitrumSepolia } from '@reown/appkit/networks'
 import React, { type ReactNode } from 'react'
 import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
 
 // Set up queryClient
 const queryClient = new QueryClient()
-console.log(projectId)
-if (projectId == '') {
-    throw new Error('Project ID is not defined')
-}
 
 // Set up metadata
 const metadata = {
@@ -26,8 +22,8 @@ const metadata = {
 export const modal = createAppKit({
     adapters: [wagmiAdapter],
     projectId,
-    networks: [mainnet, arbitrum],
-    defaultNetwork: mainnet,
+    networks: [arbitrumSepolia],
+    defaultNetwork: arbitrumSepolia,
     metadata: metadata,
     features: {
         analytics: true // Optional - defaults to your Cloud configuration
